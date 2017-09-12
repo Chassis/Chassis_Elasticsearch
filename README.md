@@ -1,2 +1,61 @@
-# chassis-elasticsearch
-Adds an elasticsearch server to your Chassis box
+# Chassis Elasticsearch
+
+Adds an [ElasticSearch](https://www.elastic.co/) server to your
+[Chassis](https://github.com/Chassis/Chassis) box.
+
+## Installation
+
+Via `config.yaml`:
+
+You can add this repo name under the `extensions` section of your config file and
+re-provisioning your machine.
+
+```yaml
+extensions:
+  humanmade/chassis-elasticsearch
+```
+
+Via git:
+
+```
+cd path/to/chassis/extensions
+git clone --recursive git@github.com:humanmade/chassis-elasticsearch.git
+vagrant provision
+```
+
+## Usage
+
+Once the machine has finished provisioning you can access ElasticSearch at
+`http://<host>:9200/` or from within the VM at `http://localhost:9200/`.
+
+The extension also provides two PHP constants in your `local-config.php`:
+
+```php
+ELASTICSEARCH_HOST // defaults to localhost
+ELASTICSEARCH_PORT // defaults to 9200
+```
+
+## Configuration
+
+Chassis ElasticSearch provides some default options you can override from your
+config file(s).
+
+```yaml
+elasticsearch:
+  version: '5.x'
+  plugins:
+    - 'analysis-icu'
+  host: '0.0.0.0'
+  port: 9200
+  timeout: 10
+  instances:
+    - 'es'
+```
+
+Version and plugins are the only ones you'll likely want to change.
+
+## About
+
+License: GPLv3
+
+This extension was made with ❤️ by [Human Made](https://hmn.md/)
