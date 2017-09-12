@@ -36,7 +36,11 @@ class chassis-elasticsearch(
   }
 
   # Create instances
-  elasticsearch::instance { $options[instances]: }
+  elasticsearch::instance { $options[instances]:
+    config => {
+      'network.host' => '0.0.0.0'
+    }
+  }
 
   # Install plugins
   elasticsearch::plugin { $options[plugins]:
