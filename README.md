@@ -35,6 +35,9 @@ ELASTICSEARCH_HOST // defaults to localhost
 ELASTICSEARCH_PORT // defaults to 9200
 ```
 
+We recommend using the [Head Chrome Extension](https://chrome.google.com/webstore/detail/elasticsearch-head/ffmkiejjmecolpfloofpjologoblkegm/) for debugging queries and exploring
+your indexes.
+
 ## Configuration
 
 Chassis ElasticSearch provides some default options you can override from your
