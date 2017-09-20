@@ -7,12 +7,11 @@ Adds an [ElasticSearch](https://www.elastic.co/) server to your
 
 Via `config.yaml`:
 
-You can add this repo name under the `extensions` section of your config file and
-re-provisioning your machine.
+You can add this repo name under the `extensions` section of your config file.
 
 ```yaml
 extensions:
-  humanmade/chassis-elasticsearch
+  chassis/elasticsearch
 ```
 
 Via git:
@@ -20,6 +19,10 @@ Via git:
 ```
 cd path/to/chassis/extensions
 git clone --recursive git@github.com:humanmade/chassis-elasticsearch.git
+```
+
+Then reprovision your machine:
+```
 vagrant provision
 ```
 
