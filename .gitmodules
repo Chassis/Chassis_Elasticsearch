@@ -1,18 +1,18 @@
 [submodule "modules/elasticsearch"]
 	path = modules/elasticsearch
-	url = git@github.com:elastic/puppet-elasticsearch.git
+	url = https://github.com/elastic/puppet-elasticsearch.git
 [submodule "modules/archive"]
 	path = modules/archive
-	url = git@github.com:voxpupuli/puppet-archive.git
+	url = https://github.com/voxpupuli/puppet-archive.git
 [submodule "modules/concat"]
 	path = modules/concat
-	url = git@github.com:puppetlabs/puppetlabs-concat
+	url = https://github.com/puppetlabs/puppetlabs-concat.git
 [submodule "modules/java_ks"]
 	path = modules/java_ks
-	url = git@github.com:puppetlabs/puppetlabs-java_ks
+	url = https://github.com/puppetlabs/puppetlabs-java_ks.git
 [submodule "modules/java"]
 	path = modules/java
-	url = git@github.com:puppetlabs/puppetlabs-java
+	url = https://github.com/puppetlabs/puppetlabs-java.git
 [submodule "modules/datacat"]
 	path = modules/datacat
-	url = git@github.com:richardc/puppet-datacat.git
+	url = https://github.com/richardc/puppet-datacat.git
