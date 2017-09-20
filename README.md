@@ -18,7 +18,7 @@ Via git:
 
 ```
 cd path/to/chassis/extensions
-git clone --recursive git@github.com:humanmade/chassis-elasticsearch.git
+git clone --recursive git@github.com:Chassis/Elasticsearch.git
 ```
 
 Then reprovision your machine:
