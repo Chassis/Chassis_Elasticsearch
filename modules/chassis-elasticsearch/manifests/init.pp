@@ -1,3 +1,4 @@
+# Create an Elasticsearch class
 class chassis-elasticsearch(
   $config
 ) {
@@ -21,18 +22,18 @@ class chassis-elasticsearch(
 
   # Install Elasticsearch
   class { 'elasticsearch':
-    java_install      => true,
-    manage_repo       => true,
-    repo_version      => $options[version],
+    java_install => true,
+    manage_repo  => true,
+    repo_version => $options[version],
     # Ensure Java doesn't try to eat all the RAMs
-    jvm_options       => [
+    jvm_options  => [
       '-Xms512m',
       '-Xmx512m'
     ],
-    api_protocol      => 'http',
-    api_host          => $options[host],
-    api_port          => $options[port],
-    api_timeout       => $options[timeout],
+    api_protocol => 'http',
+    api_host     => $options[host],
+    api_port     => $options[port],
+    api_timeout  => $options[timeout],
   }
 
   # Create instances
