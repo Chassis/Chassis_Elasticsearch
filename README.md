@@ -11,14 +11,14 @@ You can add this repo name under the `extensions` section of your config file.
 
 ```yaml
 extensions:
-  chassis/elasticsearch
+  chassis/chassis-elasticsearch
 ```
 
 Via git:
 
 ```
 cd path/to/chassis/extensions
-git clone --recursive git@github.com:Chassis/Elasticsearch.git
+git clone --recursive git@github.com:Chassis/Chassis-Elasticsearch.git
 ```
 
 Then reprovision your machine:
