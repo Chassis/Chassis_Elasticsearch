@@ -5,7 +5,8 @@ class chassis-elasticsearch(
 
   # Default settings for install
   $defaults = {
-    'version'   => '5.x',
+    'repo_version'   => '5.x',
+    'version'        => '5.6.1',
     'plugins'   => [
       'analysis-icu'
     ],
@@ -24,7 +25,8 @@ class chassis-elasticsearch(
   class { 'elasticsearch':
     java_install => true,
     manage_repo  => true,
-    repo_version => $options[version],
+    repo_version => $options[repo_version],
+    version      => $options[version],
     # Ensure Java doesn't try to eat all the RAMs
     jvm_options  => [
       '-Xms512m',
