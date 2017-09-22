@@ -48,7 +48,8 @@ config file(s).
 
 ```yaml
 elasticsearch:
-  version: '5.x'
+  repo_version: '5.x'
+  version: '5.5.3'
   plugins:
     - 'analysis-icu'
   host: '0.0.0.0'
