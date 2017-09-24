@@ -29,8 +29,8 @@ class chassis-elasticsearch(
     version      => $options[version],
     # Ensure Java doesn't try to eat all the RAMs
     jvm_options  => [
-      '-Xms512m',
-      '-Xmx512m'
+      '-Xms256m',
+      '-Xmx256m'
     ],
     api_protocol => 'http',
     api_host     => $options[host],
