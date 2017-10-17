@@ -59,6 +59,15 @@ elasticsearch:
     - 'es'
 ```
 
+#### Debugging Elasticsearch
+
+If you're having trouble with Elasticsearch there are a few common commands you can run inside Vagrant.
+
+1. First you need to `vagrant ssh`.
+2. To check the status of Elasticsearch run: `sudo service elasticsearch-es status`.
+3. To stop Elasticsearch run: `sudo service elasticsearch-es stop`
+4. To start Elasticsearch run: `sudo service elasticsearch-es start`
+
 Version and plugins are the only ones you'll likely want to change.
 
 ## About
