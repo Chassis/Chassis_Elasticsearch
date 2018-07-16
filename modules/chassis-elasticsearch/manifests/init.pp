@@ -27,7 +27,12 @@ class chassis-elasticsearch(
       'timeout'      => 10,
       'instances'    => [
         'es'
-      ]
+      ],
+      # Ensure Java doesn't try to eat all the RAMs
+      'jvm_options'  => [
+        '-Xms256m',
+        '-Xmx256m'
+      ],
     }
 
     # Allow override from config.yaml
@@ -39,11 +44,7 @@ class chassis-elasticsearch(
       manage_repo  => true,
       repo_version => $options[repo_version],
       version      => $options[version],
-      # Ensure Java doesn't try to eat all the RAMs
-      jvm_options  => [
-        '-Xms256m',
-        '-Xmx256m'
-      ],
+      jvm_options  => $options[jvm_options],
       api_protocol => 'http',
       api_host     => $options[host],
       api_port     => $options[port],

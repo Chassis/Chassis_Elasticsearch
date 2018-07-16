@@ -57,6 +57,11 @@ elasticsearch:
   timeout: 10
   instances:
     - 'es'
+  jvm_options:
+    # You may want to increase the memory limits here if you are indexing images & files.
+    # Note you may also need to increase the memory limits for the VM and PHP also.
+    - '-Xms256m'
+    - '-Xmx256m'
 ```
 
 #### Debugging Elasticsearch
