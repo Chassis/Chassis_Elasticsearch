@@ -24,7 +24,7 @@ class chassis-elasticsearch(
       ],
       'host'         => '0.0.0.0',
       'port'         => 9200,
-      'timeout'      => 10,
+      'timeout'      => 30,
       'instances'    => [
         'es'
       ],
