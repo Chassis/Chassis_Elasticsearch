@@ -55,12 +55,14 @@ class chassis-elasticsearch(
     elasticsearch::instance { $options[instances]:
       config => {
         'network.host' => '0.0.0.0'
-      }
+      },
+      before => Class['chassis'],
     }
 
     # Install plugins
     elasticsearch::plugin { $options[plugins]:
       instances => $options[instances],
+      before => Class['chassis'],
     }
   }
 }
