@@ -56,14 +56,21 @@ class chassis-elasticsearch(
       config => {
         'network.host' => '0.0.0.0'
       },
-      require => Class['elasticsearch'],
-      before => Chassis::Wp[ $config['hosts'][0] ],
     }
 
     # Install plugins
     elasticsearch::plugin { $options[plugins]:
       instances => $options[instances],
-      require => Class['elasticsearch'],
+    }
+
+    # Ensure a dummy index is missing; this ensures the ES connection is
+    # running before we try installing.
+    elasticsearch::index { 'chassis-validate-es-connection':
+      ensure => 'absent',
+      require => [
+        Elasticsearch::Instance[ $options[instances] ],
+        Elasticsearch::Plugin[ $options[plugins] ],
+      ],
       before => Chassis::Wp[ $config['hosts'][0] ],
     }
   }
