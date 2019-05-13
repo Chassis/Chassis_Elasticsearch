@@ -24,7 +24,7 @@ class chassis-elasticsearch(
       ],
       'host'         => '0.0.0.0',
       'port'         => 9200,
-      'timeout'      => 10,
+      'timeout'      => 30,
       'instances'    => [
         'es'
       ],
@@ -55,12 +55,23 @@ class chassis-elasticsearch(
     elasticsearch::instance { $options[instances]:
       config => {
         'network.host' => '0.0.0.0'
-      }
+      },
     }
 
     # Install plugins
     elasticsearch::plugin { $options[plugins]:
       instances => $options[instances],
+    }
+
+    # Ensure a dummy index is missing; this ensures the ES connection is
+    # running before we try installing.
+    elasticsearch::index { 'chassis-validate-es-connection':
+      ensure  => 'absent',
+      require => [
+        Elasticsearch::Instance[ $options[instances] ],
+        Elasticsearch::Plugin[ $options[plugins] ],
+      ],
+      before  => Chassis::Wp[ $config['hosts'][0] ],
     }
   }
 }
