@@ -56,13 +56,15 @@ class chassis-elasticsearch(
       config => {
         'network.host' => '0.0.0.0'
       },
-      before => Class['chassis'],
+      require => Class['elasticsearch'],
+      before => Chassis::Wp[ $config['hosts'][0] ],
     }
 
     # Install plugins
     elasticsearch::plugin { $options[plugins]:
       instances => $options[instances],
-      before => Class['chassis'],
+      require => Class['elasticsearch'],
+      before => Chassis::Wp[ $config['hosts'][0] ],
     }
   }
 }
