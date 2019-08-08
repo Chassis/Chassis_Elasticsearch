@@ -1,8 +1,8 @@
 # Create an Elasticsearch class
-class chassis-elasticsearch(
+class chassis_elasticsearch(
   $config
 ) {
-  if ( ! empty( $config[disabled_extensions] ) and 'chassis/chassis-elasticsearch' in $config[disabled_extensions] ) {
+  if ( ! empty( $config[disabled_extensions] ) and 'chassis/chassis_elasticsearch' in $config[disabled_extensions] ) {
     service { 'elasticsearch-es':
       ensure => stopped,
       before => Class['elasticsearch']

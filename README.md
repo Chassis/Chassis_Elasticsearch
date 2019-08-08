@@ -11,7 +11,7 @@ You can add this repo name under the `extensions` section of your config file.
 
 ```yaml
 extensions:
-  chassis/chassis-elasticsearch
+  chassis/chassis_elasticsearch
 ```
 
 Via git:
