@@ -38,6 +38,18 @@ class chassis_elasticsearch(
     # Allow override from config.yaml
     $options = deep_merge($defaults, $config[elasticsearch])
 
+    # Allow installing 6.* versions while on 5.x branches
+    if ( $options[repo_version] == '5.x' ) {
+      apt::source { 'elasticsearch6':
+        location => 'https://artifacts.elastic.co/packages/6.x/apt',
+        release  => 'stable',
+        repos    => 'main',
+        include  => {
+          'deb' => true,
+        },
+      }
+    }
+
     # Install Elasticsearch
     class { 'elasticsearch':
       java_install => true,
