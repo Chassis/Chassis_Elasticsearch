@@ -2,6 +2,7 @@
 class chassis_elasticsearch(
   $config
 ) {
+  include ::java
   if ( ! empty( $config[disabled_extensions] ) and 'chassis/chassis_elasticsearch' in $config[disabled_extensions] ) {
     service { 'elasticsearch-es':
       ensure => stopped,
@@ -14,10 +15,9 @@ class chassis_elasticsearch(
       ensure => absent
     }
   } else {
-
     # Default settings for install
     $defaults = {
-      'repo_version' => '5.x',
+      'repo_version' => '5',
       'version'      => '5.6.1',
       'plugins'      => [
         'analysis-icu'
@@ -38,23 +38,13 @@ class chassis_elasticsearch(
     # Allow override from config.yaml
     $options = deep_merge($defaults, $config[elasticsearch])
 
-    # Allow installing 6.* versions while on 5.x branches
-    if ( $options[repo_version] == '5.x' ) {
-      apt::source { 'elasticsearch6':
-        location => 'https://artifacts.elastic.co/packages/6.x/apt',
-        release  => 'stable',
-        repos    => 'main',
-        include  => {
-          'deb' => true,
-        },
-      }
+    class { 'elastic_stack::repo':
+      version => Integer($options[repo_version]),
     }
 
     # Install Elasticsearch
     class { 'elasticsearch':
-      java_install => true,
       manage_repo  => true,
-      repo_version => $options[repo_version],
       version      => $options[version],
       jvm_options  => $options[jvm_options],
       api_protocol => 'http',
