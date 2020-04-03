@@ -16,3 +16,12 @@
 [submodule "modules/datacat"]
 	path = modules/datacat
 	url = https://github.com/richardc/puppet-datacat.git
+[submodule "modules/elastic_stack"]
+	path = modules/elastic_stack
+	url = https://github.com/elastic/puppet-elastic-stack.git
+[submodule "modules/yum"]
+	path = modules/yum
+	url = https://github.com/voxpupuli/puppet-yum.git
+[submodule "modules/yumrepo_core"]
+	path = modules/yumrepo_core
+	url = https://github.com/puppetlabs/puppetlabs-yumrepo_core.git

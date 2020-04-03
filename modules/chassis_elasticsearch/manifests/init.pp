@@ -2,6 +2,7 @@
 class chassis_elasticsearch(
   $config
 ) {
+  include ::java
   if ( ! empty( $config[disabled_extensions] ) and 'chassis/chassis_elasticsearch' in $config[disabled_extensions] ) {
     service { 'elasticsearch-es':
       ensure => stopped,
@@ -14,10 +15,9 @@ class chassis_elasticsearch(
       ensure => absent
     }
   } else {
-
     # Default settings for install
     $defaults = {
-      'repo_version' => '5.x',
+      'repo_version' => '5',
       'version'      => '5.6.1',
       'plugins'      => [
         'analysis-icu'
@@ -31,30 +31,36 @@ class chassis_elasticsearch(
       # Ensure Java doesn't try to eat all the RAMs
       'jvm_options'  => [
         '-Xms256m',
-        '-Xmx256m'
+        '-Xmx256m',
+        # The following rules ensure these settings are only used for
+        # versions of Java that support them, otherwise Elastic will fail
+        # to start.
+        '8:-XX:NumberOfGCLogFiles=32',
+        '8:-XX:GCLogFileSize=64m',
+        '8:-XX:+UseGCLogFileRotation',
+        '8:-XX:+PrintTenuringDistribution',
+        '8:-XX:+PrintGCDateStamps',
+        '8:-XX:+PrintGCApplicationStoppedTime',
+        '8:-XX:+UseConcMarkSweepGC',
+        '8:-XX:+UseCMSInitiatingOccupancyOnly',
+        '11:-XX:+UseG1GC',
+        '11:-XX:InitiatingHeapOccupancyPercent=75'
       ],
     }
 
     # Allow override from config.yaml
     $options = deep_merge($defaults, $config[elasticsearch])
 
-    # Allow installing 6.* versions while on 5.x branches
-    if ( $options[repo_version] == '5.x' ) {
-      apt::source { 'elasticsearch6':
-        location => 'https://artifacts.elastic.co/packages/6.x/apt',
-        release  => 'stable',
-        repos    => 'main',
-        include  => {
-          'deb' => true,
-        },
-      }
+    # Support legacy repo version values.
+    $repo_version = regsubst($options[repo_version], '^(\d+).*', '\\1')
+
+    class { 'elastic_stack::repo':
+      version => Integer($repo_version),
     }
 
     # Install Elasticsearch
     class { 'elasticsearch':
-      java_install => true,
       manage_repo  => true,
-      repo_version => $options[repo_version],
       version      => $options[version],
       jvm_options  => $options[jvm_options],
       api_protocol => 'http',
