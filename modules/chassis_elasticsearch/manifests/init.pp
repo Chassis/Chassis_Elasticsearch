@@ -31,15 +31,31 @@ class chassis_elasticsearch(
       # Ensure Java doesn't try to eat all the RAMs
       'jvm_options'  => [
         '-Xms256m',
-        '-Xmx256m'
+        '-Xmx256m',
+        # The following rules ensure these settings are only used for
+        # versions of Java that support them, otherwise Elastic will fail
+        # to start.
+        '8:-XX:NumberOfGCLogFiles=32',
+        '8:-XX:GCLogFileSize=64m',
+        '8:-XX:+UseGCLogFileRotation',
+        '8:-XX:+PrintTenuringDistribution',
+        '8:-XX:+PrintGCDateStamps',
+        '8:-XX:+PrintGCApplicationStoppedTime',
+        '8:-XX:+UseConcMarkSweepGC',
+        '8:-XX:+UseCMSInitiatingOccupancyOnly',
+        '11:-XX:+UseG1GC',
+        '11:-XX:InitiatingHeapOccupancyPercent=75'
       ],
     }
 
     # Allow override from config.yaml
     $options = deep_merge($defaults, $config[elasticsearch])
 
+    # Support legacy repo version values.
+    $repo_version = regsubst($options[repo_version], '^(\d+).*', '\\1')
+
     class { 'elastic_stack::repo':
-      version => Integer($options[repo_version]),
+      version => Integer($repo_version),
     }
 
     # Install Elasticsearch
