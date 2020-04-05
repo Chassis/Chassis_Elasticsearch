@@ -17,12 +17,12 @@ class chassis_elasticsearch(
   } else {
     # Default settings for install
     $defaults = {
-      'repo_version' => '5',
-      'version'      => '5.6.1',
+      # 'repo_version' => '5',
+      # 'version'      => '5.6.1',
       'plugins'      => [
         'analysis-icu'
       ],
-      'host'         => '0.0.0.0',
+      'host'         => $config["hosts"][0],
       'port'         => 9200,
       'timeout'      => 30,
       'instances'    => [
@@ -51,30 +51,31 @@ class chassis_elasticsearch(
     # Allow override from config.yaml
     $options = deep_merge($defaults, $config[elasticsearch])
 
-    # Support legacy repo version values.
-    $repo_version = regsubst($options[repo_version], '^(\d+).*', '\\1')
+    # # Support legacy repo version values.
+    # $repo_version = regsubst($options[repo_version], '^(\d+).*', '\\1')
 
-    class { 'elastic_stack::repo':
-      version => Integer($repo_version),
-    }
+    # class { 'elastic_stack::repo':
+    #   version => Integer($repo_version),
+    # }
 
     # Install Elasticsearch
     class { 'elasticsearch':
       manage_repo  => true,
-      version      => $options[version],
-      jvm_options  => $options[jvm_options],
-      api_protocol => 'http',
-      api_host     => $options[host],
-      api_port     => $options[port],
-      api_timeout  => $options[timeout],
+      # version         => $options[version],
+      jvm_options       => $options[jvm_options],
+      api_protocol      => 'http',
+      api_host          => $options[host],
+      api_port          => $options[port],
+      api_timeout       => $options[timeout],
+      config            => {
+        'network.host'  => '0.0.0.0'
+      },
+      restart_on_change => true,
+      status            => enabled,
     }
 
     # Create instances
-    elasticsearch::instance { $options[instances]:
-      config => {
-        'network.host' => '0.0.0.0'
-      },
-    }
+    elasticsearch::instance { $options[instances]:}
 
     # Install plugins
     elasticsearch::plugin { $options[plugins]:
