@@ -56,6 +56,7 @@ class chassis_elasticsearch(
 
     class { 'elastic_stack::repo':
       version => Integer($repo_version),
+      notify  => Exec['apt_update']
     }
 
     # Install Elasticsearch
@@ -71,7 +72,7 @@ class chassis_elasticsearch(
         'network.host'  => '0.0.0.0'
       },
       restart_on_change => true,
-      status            => enabled,
+      status            => enabled
     }
 
     # Create instances
