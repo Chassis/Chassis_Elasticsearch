@@ -76,7 +76,7 @@ class chassis_elasticsearch(
     }
 
     # Create instances
-    elasticsearch::instance { $options[instances]:}
+    elasticsearch::instance { $options[instances]: }
 
     # Install plugins
     elasticsearch::plugin { $options[plugins]:
