@@ -18,7 +18,7 @@ class chassis_elasticsearch(
     # Default settings for install
     $defaults = {
       'repo_version' => '5',
-      'version'      => '5.6.1',
+      'version'      => '5.6.16',
       'plugins'      => [
         'analysis-icu'
       ],
@@ -43,7 +43,7 @@ class chassis_elasticsearch(
         '8:-XX:+PrintGCApplicationStoppedTime',
         '8:-XX:+UseConcMarkSweepGC',
         '8:-XX:+UseCMSInitiatingOccupancyOnly',
-        '11:-XX:+UseG1GC',
+        '-XX:+UseG1GC',
         '11:-XX:InitiatingHeapOccupancyPercent=75'
       ],
     }
@@ -56,25 +56,27 @@ class chassis_elasticsearch(
 
     class { 'elastic_stack::repo':
       version => Integer($repo_version),
+      notify  => Exec['apt_update']
     }
 
     # Install Elasticsearch
     class { 'elasticsearch':
-      manage_repo  => true,
-      version      => $options[version],
-      jvm_options  => $options[jvm_options],
-      api_protocol => 'http',
-      api_host     => $options[host],
-      api_port     => $options[port],
-      api_timeout  => $options[timeout],
+      manage_repo       => true,
+      version           => $options[version],
+      jvm_options       => $options[jvm_options],
+      api_protocol      => 'http',
+      api_host          => $options[host],
+      api_port          => $options[port],
+      api_timeout       => $options[timeout],
+      config            => {
+        'network.host'  => '0.0.0.0'
+      },
+      restart_on_change => true,
+      status            => enabled
     }
 
     # Create instances
-    elasticsearch::instance { $options[instances]:
-      config => {
-        'network.host' => '0.0.0.0'
-      },
-    }
+    elasticsearch::instance { $options[instances]: }
 
     # Install plugins
     elasticsearch::plugin { $options[plugins]:
