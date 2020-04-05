@@ -17,12 +17,12 @@ class chassis_elasticsearch(
   } else {
     # Default settings for install
     $defaults = {
-      'repo_version' => '6',
-      'version'      => '6.8.8',
+      'repo_version' => '5',
+      'version'      => '5.6.16',
       'plugins'      => [
         'analysis-icu'
       ],
-      'host'         => $config["hosts"][0],
+      'host'         => '0.0.0.0',
       'port'         => 9200,
       'timeout'      => 30,
       'instances'    => [
@@ -43,7 +43,7 @@ class chassis_elasticsearch(
         '8:-XX:+PrintGCApplicationStoppedTime',
         '8:-XX:+UseConcMarkSweepGC',
         '8:-XX:+UseCMSInitiatingOccupancyOnly',
-        '11:-XX:+UseG1GC',
+        '-XX:+UseG1GC',
         '11:-XX:InitiatingHeapOccupancyPercent=75'
       ],
     }
