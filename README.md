@@ -57,14 +57,33 @@ elasticsearch:
   timeout: 10
   instances:
     - 'es'
+  # You may want to increase the memory limit here if you are indexing images & files.
+  # Note you may also need to increase the memory limits for the VM and PHP also.
+  # Value is in Megabytes.
+  memory: 256
+  # You can override the default JVM options here as an array. For more information
+  # see the docs at https://www.elastic.co/guide/en/elasticsearch/reference/master/jvm-options.html
   jvm_options:
-    # You may want to increase the memory limits here if you are indexing images & files.
-    # Note you may also need to increase the memory limits for the VM and PHP also.
+    # Alternative way to configure the memory heap size settings at a more granular level.
     - '-Xms256m'
     - '-Xmx256m'
 ```
 
-#### Debugging Elasticsearch
+### A note on memory usage
+
+If you do increase the memory available to Elasticsearch you should generally ensure the VM itself has double that amount of memory to ensure all extensions and services run smoothly.
+
+The below example gives Elasticsearch 1Gig of memory and increases the VM memory to 2Gig.
+
+```yaml
+elasticsearch:
+  memory: 1024
+
+virtualbox:
+  memory: 2048
+```
+
+### Debugging Elasticsearch
 
 If you're having trouble with Elasticsearch there are a few common commands you can run inside Vagrant.
 
