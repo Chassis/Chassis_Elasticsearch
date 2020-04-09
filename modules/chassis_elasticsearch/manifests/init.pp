@@ -11,9 +11,6 @@ class chassis_elasticsearch(
     class { 'elasticsearch':
       ensure => 'absent'
     }
-    package { 'java-common':
-      ensure => absent
-    }
   } else {
     # Default settings for install
     $defaults = {
