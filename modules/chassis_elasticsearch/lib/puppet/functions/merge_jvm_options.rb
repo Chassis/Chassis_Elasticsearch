@@ -58,7 +58,7 @@ Puppet::Functions.create_function(:merge_jvm_options) do
 
 		# Remove matched option keys from the defaults array
 		trimmed_defaults = defaults.reduce([]) do |carry, default|
-			carry << default if default !~ /(#{option_keys.join('|')})/
+			carry << default if option_keys.empty? or default !~ /(#{option_keys.join('|')})/
 			carry
 		end
 
