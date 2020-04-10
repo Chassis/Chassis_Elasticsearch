@@ -2,7 +2,6 @@
 class chassis_elasticsearch(
   $config
 ) {
-  include ::java
   if ( ! empty( $config[disabled_extensions] ) and 'chassis/chassis_elasticsearch' in $config[disabled_extensions] ) {
     service { 'elasticsearch-es':
       ensure => stopped,
@@ -11,7 +10,11 @@ class chassis_elasticsearch(
     class { 'elasticsearch':
       ensure => 'absent'
     }
+    package { 'java-common':
+        ensure => 'absent'
+    }
   } else {
+    include ::java
     # Default settings for install
     $defaults = {
       'repo_version' => '5',
