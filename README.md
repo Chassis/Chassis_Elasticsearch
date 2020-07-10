@@ -41,6 +41,36 @@ ELASTICSEARCH_PORT // defaults to 9200
 We recommend using the [Head Chrome Extension](https://chrome.google.com/webstore/detail/elasticsearch-head/ffmkiejjmecolpfloofpjologoblkegm/) for debugging queries and exploring
 your indexes.
 
+### Custom Dictionary Files
+
+Elasticsearch supports using text files for providing stopwords, synonyms and if using the `analysis-kuromoji` plugin a custom user dictionary file for tokenisation.
+
+This extension ensures there is a directory at `/usr/share/elasticsearch/config` that is writable by the web server.
+
+To reference files added to that location you can use a relative path with the `config/` prefix. For example you could create an analyser using a custom stopwords file in the following way:
+
+```json
+{
+  "analysis": {
+    "filter": {
+      "custom_stopwords": {
+        "type": "stop",
+        "stopwords_path": "config/stopwords.txt"
+      }
+    },
+    "analyzer": {
+      "default": {
+        "type": "custom",
+        "filter": [
+          "custom_stopwords"
+        ],
+        "tokenizer": "standard"
+      }
+    }
+  }
+}
+```
+
 ## Configuration
 
 Chassis ElasticSearch provides some default options you can override from your
