@@ -60,7 +60,7 @@ To reference files added to that location you can use a relative path with the `
     },
     "analyzer": {
       "default": {
-        "type": "custom"
+        "type": "custom",
         "filter": [
           "custom_stopwords"
         ],
