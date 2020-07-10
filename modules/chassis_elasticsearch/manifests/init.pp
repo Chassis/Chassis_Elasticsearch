@@ -108,15 +108,15 @@ class chassis_elasticsearch(
 
     file { '/usr/share/elasticsearch/config':
       ensure  => directory,
-      owner => 'elasticsearch',
-      group => 'www-data',
-      mode => '0777',
+      owner   => 'elasticsearch',
+      group   => 'www-data',
+      mode    => '0777',
       require => Elasticsearch::Instance[ $options[instances] ],
     }
 
     file { $package_symlinks:
-      ensure => link,
-      target => '/usr/share/elasticsearch/config',
+      ensure  => link,
+      target  => '/usr/share/elasticsearch/config',
       require => File['/usr/share/elasticsearch/config']
     }
   }
