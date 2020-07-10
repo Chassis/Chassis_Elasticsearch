@@ -105,16 +105,19 @@ class chassis_elasticsearch(
 
     # Create shared config directory and give write permissions to web server.
     $package_symlinks = $options[instances].map |$index, $value| { "/etc/elasticsearch/${value}/config" }
+
     file { '/usr/share/elasticsearch/config':
       ensure  => directory,
       owner => 'elasticsearch',
       group => 'www-data',
       mode => '0777',
       require => Elasticsearch::Instance[ $options[instances] ],
-    } ~>
+    }
+
     file { $package_symlinks:
       ensure => link,
-      target => '/usr/share/elasticsearch/config'
+      target => '/usr/share/elasticsearch/config',
+      require => File['/usr/share/elasticsearch/config']
     }
   }
 }
