@@ -3,7 +3,7 @@ class chassis_elasticsearch(
   $config
 ) {
   if ( ! empty( $config[disabled_extensions] ) and 'chassis/chassis_elasticsearch' in $config[disabled_extensions] ) {
-    service { 'elasticsearch-es':
+    service { 'elasticsearch':
       ensure => stopped,
       before => Class['elasticsearch']
     }
@@ -25,9 +25,6 @@ class chassis_elasticsearch(
       'host'         => '0.0.0.0',
       'port'         => 9200,
       'timeout'      => 30,
-      'instances'    => [
-        'es'
-      ],
       # Ensure Java doesn't try to eat all the RAMs by default
       'memory'       => 256,
       'jvm_options'  => [],
@@ -78,40 +75,35 @@ class chassis_elasticsearch(
       api_port          => $options[port],
       api_timeout       => $options[timeout],
       config            => {
-        'network.host'  => '0.0.0.0'
+        'network.host'  => '0.0.0.0',
+        'discovery.type' => 'single-node',
+        'discovery.seed_hosts' => []
       },
       restart_on_change => true,
       status            => enabled
     }
 
-    # Create instances
-    elasticsearch::instance { $options[instances]: }
-
     # Install plugins
-    elasticsearch::plugin { $options[plugins]:
-      instances => $options[instances],
-    }
+    elasticsearch::plugin { $options[plugins]: }
 
     # Ensure a dummy index is missing; this ensures the ES connection is
     # running before we try installing.
     elasticsearch::index { 'chassis-validate-es-connection':
       ensure  => 'absent',
       require => [
-        Elasticsearch::Instance[ $options[instances] ],
         Elasticsearch::Plugin[ $options[plugins] ],
       ],
       before  => Chassis::Wp[ $config['hosts'][0] ],
     }
 
     # Create shared config directory and give write permissions to web server.
-    $package_symlinks = $options[instances].map |$index, $value| { "/etc/elasticsearch/${value}/config" }
+    $package_symlinks = [ "/etc/elasticsearch/config" ]
 
     file { '/usr/share/elasticsearch/config':
       ensure  => directory,
       owner   => 'elasticsearch',
       group   => 'www-data',
       mode    => '0777',
-      require => Elasticsearch::Instance[ $options[instances] ],
     }
 
     file { $package_symlinks:
