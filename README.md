@@ -3,6 +3,10 @@
 Adds an [ElasticSearch](https://www.elastic.co/) server to your
 [Chassis](https://github.com/Chassis/Chassis) box.
 
+## 🚨 Breaking Changes 🚨
+
+The Elasticsearch puppet module no longer supports multiple instances and there is no migration path to the new set up. You may need to back up your database, destroy the machine and recreate for it to provision successfully.
+
 ## Installation
 
 Via `config.yaml`:
@@ -78,15 +82,13 @@ config file(s).
 
 ```yaml
 elasticsearch:
-  repo_version: '5.x'
-  version: '5.5.3'
+  repo_version: '7'
+  version: '7.10.2'
   plugins:
     - 'analysis-icu'
   host: '0.0.0.0'
   port: 9200
-  timeout: 10
-  instances:
-    - 'es'
+  timeout: 60
   # You may want to increase the memory limit here if you are indexing images & files.
   # Note you may also need to increase the memory limits for the VM and PHP also.
   # Value is in Megabytes.
