@@ -1,6 +1,6 @@
 [submodule "modules/elasticsearch"]
 	path = modules/elasticsearch
-	url = https://github.com/humanmade/puppet-elasticsearch.git
+	url = https://github.com/elastic/puppet-elasticsearch.git
 [submodule "modules/archive"]
 	path = modules/archive
 	url = https://github.com/voxpupuli/puppet-archive.git
