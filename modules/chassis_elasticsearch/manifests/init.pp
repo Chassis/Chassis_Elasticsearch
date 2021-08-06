@@ -3,10 +3,6 @@ class chassis_elasticsearch(
   $config
 ) {
   if ( ! empty( $config[disabled_extensions] ) and 'chassis/chassis_elasticsearch' in $config[disabled_extensions] ) {
-    # service { 'elasticsearch-es':
-    #   ensure => stopped,
-    #   before => Class['elasticsearch']
-    # }
     class { 'elasticsearch':
       ensure => 'absent'
     }
